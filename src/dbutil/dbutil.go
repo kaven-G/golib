@@ -116,8 +116,8 @@ func (s *SqlObj) QueryAsList() []map[string]string {
 	colSlice := make([]interface{}, colLen)
 	// 初始化colSlice
 	for i, _ := range colSlice {
-		var a interface{}
-		colSlice[i] = &a
+		var a *string = new(string)
+		colSlice[i] = a
 	}
 
 	// 保存返回值
@@ -127,8 +127,10 @@ func (s *SqlObj) QueryAsList() []map[string]string {
 		rows.Scan(colSlice...)
 		rowMap := make(map[string]string)
 		for i, v := range colSlice {
-			content := *v.(*interface{})
-			rowMap[cols[i]] = byte2String(content.([]uint8))
+			//content := *v.(*interface{})
+			//rowMap[cols[i]] = byte2String(content.([]uint8))
+			rowMap[cols[i]] = *v.(*string)
+
 		}
 		resultList = append(resultList, rowMap)
 	}
@@ -136,10 +138,10 @@ func (s *SqlObj) QueryAsList() []map[string]string {
 }
 
 // 字节数组转换成字符串
-func byte2String(source []uint8) string {
-	bytes := []byte{}
-	for _, v := range source {
-		bytes = append(bytes, byte(v))
-	}
-	return string(bytes)
-}
+//func byte2String(source []uint8) string {
+//	bytes := []byte{}
+//	for _, v := range source {
+//		bytes = append(bytes, byte(v))
+//	}
+//	return string(bytes)
+//}
